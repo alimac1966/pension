@@ -1,4 +1,4 @@
-package org.macnair.model;
+package org.macnair.pension.model;
 
 public class CalcResult {
     public double value1;

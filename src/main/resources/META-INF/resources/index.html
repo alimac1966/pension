@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pension Simulator</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<h1>Pension Simulator</h1>
+
+<div class="section">
+    <h2>Inputs</h2>
+
+    <div class="form-grid">
+        <label for="pensionBalance">Pension Balance</label>
+        <input id="pensionBalance" type="number" value="466208">
+
+        <label for="growthRate">Growth Rate (e.g. 0.06)</label>
+        <input id="growthRate" type="number" step="0.01" value="0.06">
+
+        <label for="mortgageBalance">Mortgage Balance</label>
+        <input id="mortgageBalance" type="number" value="59514">
+
+        <label for="mortgageInterestRate">Mortgage Interest Rate (e.g. 0.04)</label>
+        <input id="mortgageInterestRate" type="number" step="0.01" value="0.04">
+
+        <label for="mortgageMonthlyPayment">Mortgage Monthly Payment</label>
+        <input id="mortgageMonthlyPayment" type="number" value="0">
+
+        <label for="monthlyDrawdown">Monthly Drawdown</label>
+        <input id="monthlyDrawdown" type="number" value="2500">
+    </div>
+
+    <div class="button-row">
+        <button onclick="runProjection()">Run Projection</button>
+        <button onclick="runStressTest()">Run Stress Test</button>
+    </div>
+</div>
+
+<h2>Historical Stress Test Results</h2>
+<button onclick="runStressTestAllYears()">Run Full Historical Stress Test</button>
+<button onclick="runDetailedStressTest()">Run Detailed Stress Test</button>
+
+<table id="stressTestTable" border="1" cellpadding="8" class="results-table">
+    <thead>
+    <tr>
+        <th>Start Year</th>
+        <th>Months Until Depletion</th>
+        <th>Years Until Depletion</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div id="projectionResult" class="result"></div>
+<div id="stressTestResult" class="result"></div>
+
+<!-- External JS -->
+<script src="scripts.js"></script>
+
+</body>
+</html>
