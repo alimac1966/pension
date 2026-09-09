@@ -1,4 +1,4 @@
-package org.macnair.resource;
+package org.macnair.pension.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -6,8 +6,8 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
-import org.macnair.model.CalcResult;
-import org.macnair.service.CalcService;
+import org.macnair.pension.model.CalcResult;
+import org.macnair.pension.service.CalcService;
 
 @Path("/calc")
 public class CalcResource {

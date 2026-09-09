@@ -1,8 +1,8 @@
-package org.macnair.service;
+package org.macnair.pension.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.macnair.model.CalcResult;
+import org.macnair.pension.model.CalcResult;
 
 @ApplicationScoped
 public class CalcService {
