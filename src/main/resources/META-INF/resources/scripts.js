@@ -72,6 +72,7 @@ async function runStressTestAllYears() {
     const results = await response.json();
 
     const tableBody = document.querySelector("#stressTestTable tbody");
+
     tableBody.innerHTML = "";
 
     results.forEach(row => {
