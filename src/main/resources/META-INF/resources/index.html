@@ -2,65 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pension Simulator</title>
-
-    <!-- External CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pension Forecast Calculator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
-<h1>Pension Simulator</h1>
+<main class="container">
+    <header>
+        <h1>How long will your pension last</h1>
+        <p class="subtitle">Welcome, Alistair. Use the tool below to run a detailed pension stress test.</p>
+    </header>
 
-<div class="section">
-    <h2>Inputs</h2>
-
-    <div class="form-grid">
-        <label for="pensionBalance">Pension Balance</label>
-        <input id="pensionBalance" type="number" value="466208">
-
-        <label for="growthRate">Growth Rate (e.g. 0.06)</label>
-        <input id="growthRate" type="number" step="0.01" value="0.06">
-
-        <label for="mortgageBalance">Mortgage Balance</label>
-        <input id="mortgageBalance" type="number" value="59514">
-
-        <label for="mortgageInterestRate">Mortgage Interest Rate (e.g. 0.04)</label>
-        <input id="mortgageInterestRate" type="number" step="0.01" value="0.04">
-
-        <label for="mortgageMonthlyPayment">Mortgage Monthly Payment</label>
-        <input id="mortgageMonthlyPayment" type="number" value="0">
-
-        <label for="monthlyDrawdown">Monthly Drawdown</label>
-        <input id="monthlyDrawdown" type="number" value="2500">
-    </div>
-
-    <div class="button-row">
-        <button onclick="runProjection()">Run Projection</button>
+    <section class="card">
+        <h2 class="section-title">Stress Test Parameters</h2>
+        <div class="input-grid">
+            <div class="field">
+                <label>Pension Balance</label>
+                <input id="pensionBalance" type="number" step="0.01" value="466208.11">
+            </div>
+            <div class="field">
+                <label>Growth Rate</label>
+                <input id="growthRate" type="number" step="0.01" value="0.06">
+            </div>
+            <div class="field">
+                <label>Inflation</label>
+                <input id="inflation" type="number" step="0.01" value="0.03">
+            </div>
+            <div class="field">
+                <label>Mortgage Balance</label>
+                <input id="mortgageBalance" type="number" step="0.01" value="59514.31">
+            </div>
+            <div class="field">
+                <label>Annual Spending</label>
+                <input id="spending" type="number" step="0.01" value="30000">
+            </div>
+            <div class="field">
+                <label>Savings</label>
+                <input id="savings" type="number" step="0.01" value="14983.52">
+            </div>
+            <div class="field">
+                <label>Tax Allowance</label>
+                <input id="taxAllowance" type="number" step="0.01" value="12570">
+            </div>
+            <div class="field">
+                <label>State Pension</label>
+                <input id="statePension" type="number" step="0.01" value="12570">
+            </div>
+        </div>
         <button onclick="runStressTest()">Run Stress Test</button>
-    </div>
-</div>
+    </section>
 
-<h2>Historical Stress Test Results</h2>
-<button onclick="runStressTestAllYears()">Run Full Historical Stress Test</button>
-<button onclick="runDetailedStressTest()">Run Detailed Stress Test</button>
+    <section class="results-wrapper">
+        <h2>Results</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Age</th>
+                    <th>Tax-Free</th>
+                    <th>Taxable</th>
+                    <th>Spending</th>
+                    <th>Income (TF)</th>
+                    <th>Income (Tax)</th>
+                    <th>State Pension</th>
+                    <th>Other</th>
+                </tr>
+                </thead>
+                <tbody id="resultsTable"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
 
-<table id="stressTestTable" border="1" cellpadding="8" class="results-table">
-    <thead>
-    <tr>
-        <th>Start Year</th>
-        <th>Months Until Depletion</th>
-        <th>Years Until Depletion</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-</table>
-
-<div id="projectionResult" class="result"></div>
-<div id="stressTestResult" class="result"></div>
-
-<!-- External JS -->
-<script src="scripts.js"></script>
-
+<script src="script.js"></script>
 </body>
 </html>
