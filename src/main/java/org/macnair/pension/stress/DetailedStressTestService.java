@@ -20,7 +20,7 @@ public class DetailedStressTestService {
         List<DetailedStressTestSummaryDTO> results = new ArrayList<>();
 
         int currentYear = LocalDate.now().getYear();
-        int age = currentYear - 1966;
+        int age = currentYear - 1966 + 1;
 
         // Split pension into tax-free (25%) and taxable (75%)
         double tfp = d.pensionBalance * 0.25;
@@ -40,7 +40,7 @@ public class DetailedStressTestService {
         double growthFactor = 1 + d.growthRate;
         double inflationFactor = 1 + d.inflation;
 
-
+        double taxAllowance = d.taxAllowance;
         double incomeTaxPension = d.taxAllowance;
         double incomeStatePension =  (age >= 67) ? baseStatePension : 0;
         double incomeTFPension = spending - incomeTaxPension - incomeStatePension - incomeOther;
@@ -54,7 +54,7 @@ public class DetailedStressTestService {
         row.spending = spending;
         row.incomeTFPension = incomeTFPension;
         row.incomeTaxPension = incomeTaxPension;
-        row.incomeStatePension = incomeStatePension;
+        row.incomeStatePension = baseStatePension;
         row.incomeOther = incomeOther;
         results.add(mapper.toSummaryDTO(row));
 
@@ -62,39 +62,45 @@ public class DetailedStressTestService {
 
         while (tfp > 0 || tp > 0) {
 
+            baseStatePension = baseStatePension * (1 + d.inflation); // Adjust state pension for inflation
+
             // Determine income needed
-            double remainingSpending = spending;
 
-//            double incomeTFPension = 0;
-//            double incomeTaxPension = 0;
-
-            // 1. Use tax-free pension first
+            // 1. Calculate tax-free pension
             if (tfp > 0) {
-                double tfpWithdrawal = Math.min(tfp, remainingSpending);
-                incomeTFPension = tfpWithdrawal;
-                remainingSpending -= tfpWithdrawal;
-                tfp -= tfpWithdrawal;
+                    tfp = (tfp - incomeTFPension) * growthFactor; // Apply growth to remaining tax-free pension
             }
 
-            // 2. Use taxable pension up to tax allowance
-            if (remainingSpending > 0 && tp > 0) {
-                double taxableUpToAllowance = Math.min(d.taxAllowance, remainingSpending);
-                double tpWithdrawal = Math.min(tp, taxableUpToAllowance);
-                incomeTaxPension = tpWithdrawal;
-                remainingSpending -= tpWithdrawal;
-                tp -= tpWithdrawal;
+            // 2. Calculate taxable pension
+            if (spending > 0 && tp > 0) {
+                tp = (tp - incomeTaxPension ) * growthFactor; // Apply growth to remaining taxable pension
             }
 
-            // 3. Use taxable pension above allowance (fully taxable)
-            if (remainingSpending > 0 && tp > 0) {
-                double tpWithdrawal = Math.min(tp, remainingSpending);
-                incomeTaxPension += tpWithdrawal;
-                remainingSpending -= tpWithdrawal;
-                tp -= tpWithdrawal;
+            // 3. Calculate Spending
+            if (spending > 0 && tp > 0) {
+                spending *= inflationFactor; // Apply growth to spending
             }
 
-            // 4. State pension (if age >= 67)
-             incomeStatePension = (age >= 67) ? baseStatePension : 0;
+            // 4. Calculate State pension (if age >= 67)
+            incomeStatePension = (age >= 67) ? baseStatePension : 0;
+
+            // 5. Calculate Income from Pension
+
+            if (tfp > (spending - taxAllowance )) {
+                incomeTFPension = (spending - taxAllowance);
+                incomeTaxPension = taxAllowance;
+            } else {
+                incomeTFPension = tfp;
+                incomeTaxPension = (spending - tfp - incomeStatePension - incomeOther) * 1.25;
+
+            }
+
+
+        //    incomeTaxPension = (tfp > (spending - taxAllowance ) ? taxAllowance : (spending - incomeTFPension - incomeStatePension - incomeOther));
+
+            // 6. Calculate Tax Free Income from Pension
+        //    incomeTFPension = (tfp > (spending - taxAllowance) ? (spending - taxAllowance) : tfp);
+
 
             // Build row
 
@@ -104,25 +110,25 @@ public class DetailedStressTestService {
             row.spending = spending;
             row.incomeTFPension = incomeTFPension;
             row.incomeTaxPension = incomeTaxPension;
-            row.incomeStatePension = incomeStatePension;
+            row.incomeStatePension = baseStatePension;
             row.incomeOther = incomeOther;
 
             results.add(mapper.toSummaryDTO(row));
 
             // Apply growth to remaining pension
-            tfp *= growthFactor;
-            tp  *= growthFactor;
+//            tfp *= growthFactor;
+//            tp  *= growthFactor;
 
             // Apply inflation to spending and state pension
-            spending *= inflationFactor;
-            incomeState *= inflationFactor;
+//            spending *= inflationFactor;
+//            incomeStatePension *= inflationFactor;
 
             // Age increases
             age++;
 
             // Stop at age 100 to avoid infinite loops
             if (age > 100) break;
-            baseStatePension = baseStatePension * (1 + d.inflation); // Adjust state pension for inflation
+
         }
 
         return results;
