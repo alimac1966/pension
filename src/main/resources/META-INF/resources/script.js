@@ -1,8 +1,8 @@
 const DEFAULTS = {
-    pensionBalance: 500000,
+    pensionBalance: 466208,
     growthRate: 0.06,
     inflation: 0.04,
-    mortgageBalance: 50000,
+    mortgageBalance: 59514.31,
     spending: 30000,
     savings: 15000,
     taxAllowance: 12570,
