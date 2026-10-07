@@ -1,14 +1,36 @@
+const DEFAULTS = {
+    pensionBalance: 500000,
+    growthRate: 0.06,
+    inflation: 0.04,
+    mortgageBalance: 50000,
+    spending: 30000,
+    savings: 15000,
+    taxAllowance: 12570,
+    statePension: 12570
+};
+
+function getValueOrDefault(id) {
+    const el = document.getElementById(id);
+    const raw = el.value.trim();
+
+    if (raw === "") {
+        return DEFAULTS[id];
+    }
+
+    return parseFloat(raw);
+}
+
 async function runStressTest() {
 
     const request = {
-        pensionBalance: parseFloat(document.getElementById("pensionBalance").value),
-        growthRate: parseFloat(document.getElementById("growthRate").value),
-        inflation: parseFloat(document.getElementById("inflation").value),
-        mortgageBalance: parseFloat(document.getElementById("mortgageBalance").value),
-        spending: parseFloat(document.getElementById("spending").value),
-        savings: parseFloat(document.getElementById("savings").value),
-        taxAllowance: parseFloat(document.getElementById("taxAllowance").value),
-        statePension: parseFloat(document.getElementById("statePension").value)
+        pensionBalance: getValueOrDefault("pensionBalance"),
+        growthRate: getValueOrDefault("growthRate"),
+        inflation: getValueOrDefault("inflation"),
+        mortgageBalance: getValueOrDefault("mortgageBalance"),
+        spending: getValueOrDefault("spending"),
+        savings: getValueOrDefault("savings"),
+        taxAllowance: getValueOrDefault("taxAllowance"),
+        statePension: getValueOrDefault("statePension")
     };
 
     try {
@@ -18,13 +40,13 @@ async function runStressTest() {
             body: JSON.stringify(request)
         });
 
-
         if (!response.ok) {
             alert("Error running stress test");
             return;
         }
 
         const rows = await response.json();
+
         renderResults(rows);
 
     } catch (err) {
@@ -54,6 +76,7 @@ function renderResults(rows) {
         table.appendChild(tr);
     });
 }
+
 
 
 

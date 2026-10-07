@@ -4,53 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pension Forecast Calculator</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mystyle.css">
 </head>
 <body>
 
 <main class="container">
     <header>
-        <h1>How long will your pension last</h1>
-        <p class="subtitle">Welcome, Alistair. Use the tool below to run a detailed pension stress test.</p>
-    </header>
+        <h1>Financial Planning</h1> <p class="subtitle"> Explore your retirement position with pension projections, spending analysis and financial stress testing. </p>
 
+    </header>
+    <section class="navigation">
+        <button onclick="showSection('spendingAnalysis')">Spending Analysis</button>
+        <button onclick="showSection('pensionLongevity')">Pension Longevity</button>
+        <button onclick="runStressTest()">Run Pension Projection</button>
+    </section>
     <section class="card">
-        <h2 class="section-title">Stress Test Parameters</h2>
+        <h2 class="section-title">Pension Parameters</h2>
         <div class="input-grid">
             <div class="field">
                 <label>Pension Balance</label>
-                <input id="pensionBalance" type="number" step="0.01" value="466208.11">
+                <input id="pensionBalance" type="number" >
             </div>
             <div class="field">
                 <label>Growth Rate</label>
-                <input id="growthRate" type="number" step="0.01" value="0.06">
+                <input id="growthRate" type="number" >
             </div>
             <div class="field">
                 <label>Inflation</label>
-                <input id="inflation" type="number" step="0.01" value="0.03">
+                <input id="inflation" type="number" >
             </div>
             <div class="field">
                 <label>Mortgage Balance</label>
-                <input id="mortgageBalance" type="number" step="0.01" value="59514.31">
+                <input id="mortgageBalance" type="number" >
             </div>
             <div class="field">
                 <label>Annual Spending</label>
-                <input id="spending" type="number" step="0.01" value="30000">
+                <input id="spending" type="number" >
             </div>
             <div class="field">
                 <label>Savings</label>
-                <input id="savings" type="number" step="0.01" value="14983.52">
+                <input id="savings" type="number" >
             </div>
             <div class="field">
                 <label>Tax Allowance</label>
-                <input id="taxAllowance" type="number" step="0.01" value="12570">
+                <input id="taxAllowance" type="number" >
             </div>
             <div class="field">
                 <label>State Pension</label>
-                <input id="statePension" type="number" step="0.01" value="12570">
+                <input id="statePension" type="number" >
             </div>
         </div>
-        <button onclick="runStressTest()">Run Stress Test</button>
+        
     </section>
 
     <section class="results-wrapper">
