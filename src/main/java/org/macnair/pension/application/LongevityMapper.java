@@ -1,12 +1,16 @@
-package org.macnair.pension.stress;
+package org.macnair.pension.application;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import org.macnair.pension.domain.LongevityDomain;
+import org.macnair.pension.infrastructure.dto.LongevityRequestDTO;
+import org.macnair.pension.infrastructure.dto.LongevitySummaryDTO;
+import org.macnair.pension.domain.LongevitySummary;
 
 @ApplicationScoped
-public class DetailedStressTestMapper {
+public class LongevityMapper {
 
-    public DetailedStressTestDomain toDomain(DetailedStressTestRequestDTO dto) {
-        DetailedStressTestDomain domain = new DetailedStressTestDomain();
+    public LongevityDomain toDomain(LongevityRequestDTO dto) {
+        LongevityDomain domain = new LongevityDomain();
         domain.pensionBalance = dto.pensionBalance;
         domain.growthRate = dto.growthRate;
         domain.inflation = dto.inflation;
@@ -18,8 +22,8 @@ public class DetailedStressTestMapper {
         return domain;
     }
 
-    public DetailedStressTestSummaryDTO toSummaryDTO(DetailedStressTestSummary summary) {
-        return new DetailedStressTestSummaryDTO(
+    public LongevitySummaryDTO toSummaryDTO(LongevitySummary summary) {
+        return new LongevitySummaryDTO(
                 summary.myAge,
                 summary.taxFreePension,
                 summary.taxablePension,

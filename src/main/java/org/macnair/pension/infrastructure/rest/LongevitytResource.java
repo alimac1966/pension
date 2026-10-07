@@ -6,22 +6,22 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import org.macnair.pension.stress.DetailedStressTestRequestDTO;
-import org.macnair.pension.stress.DetailedStressTestService;
-import org.macnair.pension.stress.DetailedStressTestSummaryDTO;
+import org.macnair.pension.infrastructure.dto.LongevityRequestDTO;
+import org.macnair.pension.application.LongevityService;
+import org.macnair.pension.infrastructure.dto.LongevitySummaryDTO;
 
 import java.util.List;
 
-@Path("/stress-test/detailed")
+@Path("/longevity")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class DetailedStressTestResource {
+public class LongevitytResource {
 
     @Inject
-    DetailedStressTestService service;
+    LongevityService service;
 
     @POST
-    public List<DetailedStressTestSummaryDTO> runDetailedYears(DetailedStressTestRequestDTO request) {
+    public List<LongevitySummaryDTO> runDetailedYears(LongevityRequestDTO request) {
         return service.runDetailedYears(request);
     }
 }

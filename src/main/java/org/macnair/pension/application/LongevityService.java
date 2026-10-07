@@ -1,23 +1,27 @@
-package org.macnair.pension.stress;
+package org.macnair.pension.application;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.macnair.pension.domain.LongevityDomain;
+import org.macnair.pension.domain.LongevitySummary;
+import org.macnair.pension.infrastructure.dto.LongevityRequestDTO;
+import org.macnair.pension.infrastructure.dto.LongevitySummaryDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-public class DetailedStressTestService {
+public class LongevityService {
 
     @Inject
-    DetailedStressTestMapper mapper;
+    LongevityMapper mapper;
 
-    public List<DetailedStressTestSummaryDTO> runDetailedYears(DetailedStressTestRequestDTO req) {
+    public List<LongevitySummaryDTO> runDetailedYears(LongevityRequestDTO req) {
 
-        DetailedStressTestDomain d = mapper.toDomain(req);
+        LongevityDomain d = mapper.toDomain(req);
 
-        List<DetailedStressTestSummaryDTO> results = new ArrayList<>();
+        List<LongevitySummaryDTO> results = new ArrayList<>();
 
         int currentYear = LocalDate.now().getYear();
         int age = currentYear - 1966 + 1;
@@ -47,7 +51,7 @@ public class DetailedStressTestService {
 
 
         // Build row
-        DetailedStressTestSummary row = new DetailedStressTestSummary();
+        LongevitySummary row = new LongevitySummary();
         row.myAge = age;
         row.taxFreePension = tfp;
         row.taxablePension = tp;

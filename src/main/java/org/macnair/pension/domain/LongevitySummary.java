@@ -1,6 +1,6 @@
-package org.macnair.pension.stress;
+package org.macnair.pension.domain;
 
-public class DetailedStressTestSummary {
+public class LongevitySummary {
     public int myAge;
     public double taxFreePension;
     public double taxablePension;

@@ -1,6 +1,6 @@
-package org.macnair.pension.stress;
+package org.macnair.pension.domain;
 
-public class DetailedStressTestRequestDTO {
+public class LongevityDomain {
     public double pensionBalance;
     public double growthRate;
     public double inflation;
@@ -10,4 +10,3 @@ public class DetailedStressTestRequestDTO {
     public double taxAllowance;
     public double statePension;
 }
-

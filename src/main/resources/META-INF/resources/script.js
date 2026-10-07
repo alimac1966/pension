@@ -20,7 +20,7 @@ function getValueOrDefault(id) {
     return parseFloat(raw);
 }
 
-async function runStressTest() {
+async function runLongevity() {
 
     const request = {
         pensionBalance: getValueOrDefault("pensionBalance"),
@@ -34,7 +34,7 @@ async function runStressTest() {
     };
 
     try {
-        const response = await fetch("/stress-test/detailed", {
+        const response = await fetch("/longevity", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(request)
