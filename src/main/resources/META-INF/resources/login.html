@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/mystyle.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Secure Login</h1>
+        <p class="subtitle">Access your financial planning dashboard</p>
+    </header>
+
+    <div class="card" style="max-width: 480px; margin: 0 auto;">
+
+        <h2 class="section-title">Sign In</h2>
+
+        <form action="/j_security_check" method="post">
+
+            <div class="field">
+                <label for="username">Username</label>
+                <input id="username" type="text" name="j_username" placeholder="Enter username" required>
+            </div>
+
+            <div class="field">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="j_password" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit">Login</button>
+
+            <div class="error-message" style="margin-top: 16px; color: #b91c1c; font-weight: 600;">
+                <script>
+                    const params = new URLSearchParams(window.location.search);
+                    if (params.get("error")) {
+                        document.write("<p>Invalid username or password</p>");
+                    }
+                </script>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
