@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Budget Pivot with Expandable Groups</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+  th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: right; }
+  th:first-child, td:first-child { text-align: left; }
+  thead { background: #f0f0f0; }
+  tr.group-row { background: #e8f4ff; cursor: pointer; font-weight: bold; }
+  tr.category-row { background: #fafafa; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<h2>Budget Pivot (Expandable Category Groups)</h2>
+
+<input type="file" id="fileInput" accept=".csv">
+<button id="loadBtn">Load & Display</button>
+
+<div id="output"></div>
+
+<script>
+
+
+
+
+function parseCSV(text) {
+  const lines = text.trim().split(/\r?\n/);
+  const header = lines[0].split(/\t|,/);
+  const rows = lines.slice(1).map(line => {
+    const cols = line.split(/\t|,/);
+    const obj = {};
+    header.forEach((h, i) => obj[h.trim()] = (cols[i] || "").trim());
+    return obj;
+  });
+  return rows;
+}
+
+function formatMonth(dateStr) {
+  const [year, month, day] = dateStr.split("-");
+  if (!day || !month || !year) return "Unknown";
+  const d = new Date(+year, +month - 1, +day);
+  const shortYear = String(d.getFullYear()).slice(-2);
+  const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return monthNames[d.getMonth()] + "-" + shortYear;
+}
+
+function clean(str) {
+  return str.replace(/^"+|"+$/g, "").trim();
+}
+
+function buildPivot(rows) {
+  const monthsSet = new Set();
+  const pivot = {};
+
+  rows.forEach(r => {
+    const dateStr = clean(r["DATE"]);
+    const amountStr = clean(r["AMOUNT"]);
+    const group = clean(r["CATEGORY GROUP"] || "Uncategorised");
+    const category = clean(r["CATEGORY"] || "Unknown");
+
+    if (!dateStr || !amountStr) return;
+
+    const monthKey = formatMonth(dateStr);
+    monthsSet.add(monthKey);
+
+    const amount = parseFloat(amountStr);
+    if (isNaN(amount)) return;
+
+    if (!pivot[group]) pivot[group] = {};
+    if (!pivot[group][category]) pivot[group][category] = {};
+    pivot[group][category][monthKey] =
+      (pivot[group][category][monthKey] || 0) + amount;
+  });
+
+  const months = Array.from(monthsSet).sort((a, b) => {
+    const [ma, ya] = a.split("-");
+    const [mb, yb] = b.split("-");
+    const mIndex = m => ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].indexOf(m);
+    const yaNum = parseInt(ya, 10);
+    const ybNum = parseInt(yb, 10);
+    if (yaNum !== ybNum) return yaNum - ybNum;
+    return mIndex(ma) - mIndex(mb);
+  });
+
+  return { pivot, months };
+}
+
+
+function renderTable({ pivot, months }) {
+  const output = document.getElementById("output");
+  output.innerHTML = "";
+
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const tbody = document.createElement("tbody");
+
+  // Header
+  const headerRow = document.createElement("tr");
+  headerRow.innerHTML = `<th>Category Group / Category</th>` +
+    months.map(m => `<th>${m}</th>`).join("") +
+    `<th>Total</th><th>Month Ave</th>`;
+  thead.appendChild(headerRow);
+
+  // Body
+  Object.keys(pivot).sort().forEach(group => {
+    const groupRow = document.createElement("tr");
+    groupRow.classList.add("group-row");
+    groupRow.dataset.group = group;
+
+    // Compute group totals
+    let groupTotals = {};
+    let groupTotalSum = 0;
+
+    months.forEach(m => {
+      let sum = 0;
+      Object.values(pivot[group]).forEach(cat => {
+        sum += cat[m] || 0;
+      });
+      groupTotals[m] = sum;
+      groupTotalSum += sum;
+    });
+
+    const groupAvg = groupTotalSum / months.length;
+
+    groupRow.innerHTML =
+      `<td>${group}</td>` +
+      months.map(m => `<td>${groupTotals[m].toFixed(2)}</td>`).join("") +
+      `<td>${groupTotalSum.toFixed(2)}</td>` +
+      `<td>${groupAvg.toFixed(2)}</td>`;
+
+    tbody.appendChild(groupRow);
+
+    // Category rows (hidden initially)
+    Object.keys(pivot[group]).sort().forEach(category => {
+      const catRow = document.createElement("tr");
+      catRow.classList.add("category-row", "hidden");
+      catRow.dataset.group = group;
+
+      let total = 0;
+      const cells = months.map(m => {
+        const val = pivot[group][category][m] || 0;
+        total += val;
+        return `<td>${val.toFixed(2)}</td>`;
+      });
+
+      const avg = total / months.length;
+
+      catRow.innerHTML =
+        `<td style="padding-left: 30px;">${category}</td>` +
+        cells.join("") +
+        `<td>${total.toFixed(2)}</td>` +
+        `<td>${avg.toFixed(2)}</td>`;
+
+      tbody.appendChild(catRow);
+    });
+  });
+
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  output.appendChild(table);
+
+  // Expand/collapse logic
+  document.querySelectorAll(".group-row").forEach(row => {
+    row.addEventListener("click", () => {
+      const group = row.dataset.group;
+      document.querySelectorAll(`.category-row[data-group="${group}"]`)
+        .forEach(catRow => catRow.classList.toggle("hidden"));
+    });
+  });
+}
+
+document.getElementById("loadBtn").addEventListener("click", () => {
+  const file = document.getElementById("fileInput").files[0];
+  if (!file) {
+    alert("Please select a CSV file.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    const rows = parseCSV(e.target.result);
+    const pivotData = buildPivot(rows);
+    renderTable(pivotData);
+  };
+  reader.readAsText(file);
+});
+</script>
+
+</body>
