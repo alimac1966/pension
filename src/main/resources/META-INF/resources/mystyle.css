@@ -103,15 +103,10 @@ body {
 
 header {
     position: relative;
-
     margin-bottom: 34px;
-
     padding: 38px 42px;
-
     overflow: hidden;
-
     border-radius: 20px;
-
     background:
         radial-gradient(
             circle at 90% 20%,
@@ -123,9 +118,7 @@ header {
             var(--navy-950),
             var(--navy-800)
         );
-
     color: white;
-
     box-shadow: var(--shadow-lg);
 }
 

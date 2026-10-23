@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monthly Spending Summary</title>
+<link rel="stylesheet" href="mystyles.css">
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <h1>Monthly Spending Summary</h1>
+      <p class="subtitle">Spending by category group, per month</p>
+    </div>
+    <div class="navigation">
+      <input type="file" id="file" accept=".csv" hidden>
+      <span id="msg"></span>
+      <button id="toggleAll" class="secondary" hidden>Expand all</button>
+      <button id="btn">Load CSV and build table</button>
+    </div>
+  </header>
+  <div class="wrap" id="out"></div>
+</div>
+
+
+
+
+
+
+<script src="/spending.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+:root {
+  --bg: #f4f6fa;
+  --card: #ffffff;
+  --text: #1f2a37;
+  --muted: #6b7686;
+  --line: #e5e9f0;
+  --accent: #1f4e8c;
+  --accent-hover: #173c6c;
+  --head-bg: #1f4e8c;
+  --head-text: #ffffff;
+  --total-bg: #eef3fa;
+  --hover: #f7faff;
+  --neg: #c62828;
+  --shadow: 0 1px 3px rgba(16, 24, 40, .08), 0 4px 16px rgba(16, 24, 40, .06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12161c; --card: #1a2029; --text: #e6ebf2; --muted: #93a0b2;
+    --line: #2a323e; --accent: #4f8fe0; --accent-hover: #6ba2ec;
+    --head-bg: #243247; --head-text: #e6ebf2; --total-bg: #212b3a;
+    --hover: #1f2733; --neg: #ff7b7b; --shadow: none;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 32px 24px 48px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", Calibri, system-ui, -apple-system, Arial, sans-serif;
+  line-height: 1.45;
+}
+
+.page { max-width: 1400px; margin: 0 auto; }
+
+header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+h1 { margin: 0; font-size: 1.6rem; font-weight: 600; letter-spacing: -.01em; }
+.subtitle { margin: 2px 0 0; color: var(--muted); font-size: .95rem; }
+
+.controls { display: flex; align-items: center; gap: 14px; }
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+  transition: background .15s, transform .05s;
+}
+button:hover { background: var(--accent-hover); }
+button:active { transform: translateY(1px); }
+button:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent); outline-offset: 2px; }
+
+#msg { color: var(--muted); font-size: .9rem; }
+
+.wrap {
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--line);
+  overflow-x: auto;
+}
+.wrap:empty {
+  padding: 48px 24px;
+  text-align: center;
+}
+.wrap:empty::before {
+  content: "Choose your CSV export to see the monthly summary.";
+  color: var(--muted);
+}
+
+table { width: 100%; border-collapse: collapse; font-size: .95rem; font-variant-numeric: tabular-nums; }
+
+th, td { padding: 11px 16px; text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: inherit; }
+
+thead th {
+  background: var(--head-bg);
+  color: var(--head-text);
+  font-weight: 600;
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+tbody tr { background: var(--card); border-bottom: 1px solid var(--line); }
+tbody tr:nth-child(even) { background: color-mix(in srgb, var(--card) 96%, var(--text)); }
+tbody tr:hover { background: var(--hover); }
+tbody td:first-child { font-weight: 500; }
+
+/* Total and Month Ave columns */
+th:nth-last-child(-n+2), td:nth-last-child(-n+2) { font-weight: 600; border-left: 1px solid var(--line); }
+td:nth-last-child(-n+2) { background: color-mix(in srgb, var(--total-bg) 55%, transparent); }
+
+tr.total, tr.total:hover { background: var(--total-bg); border-top: 2px solid var(--text); }
+tr.total td { font-weight: 700; }
+tr.total + tr, tr.total + tr:hover { background: var(--total-bg); }
+tr.total + tr td { font-weight: 600; }
+
+.neg { color: var(--neg); }
+
+@media (max-width: 640px) {
+  body { padding: 20px 12px 32px; }
+  th, td { padding: 9px 12px; }
+}
+@media print {
+  body { background: #fff; padding: 0; }
+  button, #msg { display: none; }
+  .wrap { box-shadow: none; border: 0; }
+}
