@@ -2,26 +2,26 @@ package org.macnair.pension.application;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.macnair.pension.domain.LongevityDomain;
-import org.macnair.pension.domain.LongevitySummary;
-import org.macnair.pension.infrastructure.dto.LongevityRequestDTO;
-import org.macnair.pension.infrastructure.dto.LongevitySummaryDTO;
+import org.macnair.pension.domain.ProjectionDomain;
+import org.macnair.pension.domain.ProjectionSummary;
+import org.macnair.pension.infrastructure.dto.ProjectionRequestDTO;
+import org.macnair.pension.infrastructure.dto.ProjectionSummaryDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-public class LongevityService {
+public class ProjectionService {
 
     @Inject
-    LongevityMapper mapper;
+    ProjectionMapper mapper;
 
-    public List<LongevitySummaryDTO> runDetailedYears(LongevityRequestDTO req) {
+    public List<ProjectionSummaryDTO> runDetailedYears(ProjectionRequestDTO req) {
 
-        LongevityDomain d = mapper.toDomain(req);
+        ProjectionDomain d = mapper.toDomain(req);
 
-        List<LongevitySummaryDTO> results = new ArrayList<>();
+        List<ProjectionSummaryDTO> results = new ArrayList<>();
 
         int currentYear = LocalDate.now().getYear();
         int age = currentYear - 1966 + 1;
@@ -51,7 +51,7 @@ public class LongevityService {
 
 
         // Build row
-        LongevitySummary row = new LongevitySummary();
+        ProjectionSummary row = new ProjectionSummary();
         row.myAge = age;
         row.taxFreePension = tfp;
         row.taxablePension = tp;

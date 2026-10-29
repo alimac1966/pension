@@ -1,8 +1,5 @@
 package org.macnair.pension.application;
 
-import org.macnair.pension.infrastructure.dto.StressTestRequestDTO;
-import org.macnair.pension.infrastructure.dto.StressTestResultDTO;
-
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
