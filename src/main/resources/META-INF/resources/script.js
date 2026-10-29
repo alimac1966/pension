@@ -46,7 +46,8 @@
             </div>
 
         </div>
-        <button type="button" class="run-action" id="run-longevity">Run Longevity</button>
+        <button type="button" class="run-action" id="run-projection">Pension Projection</button>
+        <button type="button" class="run-action" id="run-stressTest">Stress Test</button>
 
       `,
     notesLower: () => `
@@ -159,7 +160,7 @@
     });
   }
 
-  async function runLongevity() {
+  async function runProjection() {
     show("lower", lowerViewMap[panes.upper.dataset.view]);
     const resultsTable = document.getElementById("resultsTable");
     const loadingRow = resultsTable.insertRow();
@@ -179,24 +180,24 @@
     };
 
     try {
-        const response = await fetch("/longevity", {
+        const response = await fetch("/projection", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(request)
         });
 
         if (!response.ok) {
-            throw new Error(`Longevity request failed (${response.status})`);
+            throw new Error(`Projection request failed (${response.status})`);
         }
 
         const rows = await response.json();
         if (!Array.isArray(rows)) {
-            throw new Error("Longevity response was not a list of results");
+            throw new Error("Projection response was not a list of results");
         }
 
         renderResults(rows);
     } catch (err) {
-        console.error("Longevity request failed:", err);
+        console.error("Projection request failed:", err);
         resultsTable.replaceChildren();
         const errorRow = resultsTable.insertRow();
         const errorCell = errorRow.insertCell();
@@ -233,8 +234,8 @@
   });
 
   panes.upper.addEventListener("click", event => {
-    if (event.target instanceof Element && event.target.closest("#run-longevity")) {
-      runLongevity();
+    if (event.target instanceof Element && event.target.closest("#run-projection")) {
+      runProjection();
     }
   });
 

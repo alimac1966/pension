@@ -1,6 +1,6 @@
 package org.macnair.pension.infrastructure.dto;
 
-public class LongevityRequestDTO {
+public class ProjectionRequestDTO {
     public double pensionBalance;
     public double growthRate;
     public double inflation;

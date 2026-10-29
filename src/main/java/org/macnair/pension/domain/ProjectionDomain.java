@@ -1,6 +1,6 @@
 package org.macnair.pension.domain;
 
-public class LongevityDomain {
+public class ProjectionDomain {
     public double pensionBalance;
     public double growthRate;
     public double inflation;

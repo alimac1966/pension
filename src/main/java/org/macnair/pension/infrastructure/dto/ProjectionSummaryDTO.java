@@ -1,7 +1,7 @@
 package org.macnair.pension.infrastructure.dto;
 
 
-public class LongevitySummaryDTO {
+public class ProjectionSummaryDTO {
     public int myAge;
     public double taxFreePension;
     public double taxablePension;
@@ -11,9 +11,9 @@ public class LongevitySummaryDTO {
     public double incomeStatePension;
     public double incomeOther;
 
-    public LongevitySummaryDTO() {}
+    public ProjectionSummaryDTO() {}
 
-    public LongevitySummaryDTO(int myAge,
+    public ProjectionSummaryDTO(int myAge,
                                double taxFreePension,
                                double taxablePension,
                                double spending,

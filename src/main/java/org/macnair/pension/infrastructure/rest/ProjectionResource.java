@@ -6,22 +6,22 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import org.macnair.pension.infrastructure.dto.LongevityRequestDTO;
-import org.macnair.pension.application.LongevityService;
-import org.macnair.pension.infrastructure.dto.LongevitySummaryDTO;
+import org.macnair.pension.application.ProjectionService;
+import org.macnair.pension.infrastructure.dto.ProjectionRequestDTO;
+import org.macnair.pension.infrastructure.dto.ProjectionSummaryDTO;
 
 import java.util.List;
 
-@Path("/longevity")
+@Path("/projection")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class LongevitytResource {
+public class ProjectionResource {
 
     @Inject
-    LongevityService service;
+    ProjectionService service;
 
     @POST
-    public List<LongevitySummaryDTO> runDetailedYears(LongevityRequestDTO request) {
+    public List<ProjectionSummaryDTO> runDetailedYears(ProjectionRequestDTO request) {
         return service.runDetailedYears(request);
     }
 }

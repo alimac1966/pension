@@ -1,6 +1,6 @@
 package org.macnair.pension.domain;
 
-public class LongevitySummary {
+public class ProjectionSummary {
     public int myAge;
     public double taxFreePension;
     public double taxablePension;
